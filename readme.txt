@@ -1,1 +1,1 @@
-Registration form homework
+Registration form homework.
