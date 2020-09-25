@@ -35,9 +35,8 @@
       </div>
   	<?php endif ?>
 
-    <!-- logged in user information -->
+
     <?php  if (isset($_SESSION['firstname'])) : 
-      
 
         $url = "https://tvnet.lv/rss";
         $xml = simplexml_load_file($url) or die("Error: Cannot create object");;

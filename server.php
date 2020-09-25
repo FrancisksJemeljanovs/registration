@@ -45,12 +45,24 @@ if (isset($_POST['reg_user'])) {
   if (count($errors) == 0) {
   	$password = md5($password_1);//encrypt the password before saving in the database
 
-  	$query = "INSERT INTO users (firstname, lastname, email, password) 
+    $query = "INSERT INTO users (firstname, lastname, email, password) 
   			  VALUES('$firstname', '$lastname', '$email', '$password')";
   	mysqli_query($db, $query);
   	$_SESSION['firstname'] = $firstname;
   	$_SESSION['success'] = "You are now logged in";
-  	header('location: index.php');
+    header('location: index.php');
+    
+  }
+}
+
+//SEND EMAIL VALIDATION
+// didnt manage to get email sending to work.
+function sendEmail($to, $hash) {
+  $message = "Thanks for registering at this site. To finish registration, click on this link:\n";
+  if (mail($to, "testing php mail function", $message)) {
+    array_push($errors, "email sent succesfully");
+  } else {
+    array_push($errors, "email sending failed");
   }
 }
 
@@ -73,10 +85,27 @@ if (isset($_POST['login_user'])) {
   	if (mysqli_num_rows($results) == 1) {
   	  $_SESSION['firstname'] = $firstname;
   	  $_SESSION['success'] = "You are now logged in";
-  	  header('location: index.php');
+      header('location: index.php');
+      sendEmail("francisks.jemeljanovs@gmail.com", "gfghj");
   	}else {
   		array_push($errors, "Wrong email/password combination");
   	}
+  }
+}
+
+// VALIDATE EMAIL FROM DATABASE
+if (isset($_GET['q'])) {
+  $email = $_GET['q'];
+  $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+  if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $email_check_query = "SELECT * FROM users WHERE email='$email' LIMIT 1";
+    $result = mysqli_query($db, $email_check_query);
+    if (mysqli_num_rows($result) == 1) {
+      //var_dump($result);
+      echo "email taken";
+    }
+  } else {
+    echo "email address not valid";
   }
 }
 

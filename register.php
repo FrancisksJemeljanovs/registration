@@ -22,7 +22,7 @@
   	</div>
   	<div class="input-group">
   	  <label>Email</label>
-  	  <input type="email" name="email" value="<?php echo $email; ?>">
+  	  <input id="email" type="email" name="email" onchange="checkEmail(this.value)" value="<?php echo $email; ?>">
   	</div>
   	<div class="input-group">
   	  <label>Password</label>
@@ -40,4 +40,28 @@
   	</p>
   </form>
 </body>
+
+<script type="text/javascript">
+
+  function checkEmail(email) {
+    let data = {
+      data: email
+    }
+    if (email == "") {
+      return
+    } else {
+      
+      let xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("GET", "server.php?q="+email,true);
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          alert(`${this.responseText}`)
+          document.getElementById("email").value = ""
+        }
+      }
+      xmlhttp.send();
+    }
+  }
+
+</script>
 </html>
