@@ -35,6 +35,7 @@ if (isset($_POST['reg_user'])) {
   $result = mysqli_query($db, $user_check_query);
   $user = mysqli_fetch_assoc($result);
   
+  
   if ($user) { // if user exists
     if ($user['email'] === $email) {
       array_push($errors, "User with this email already exists");
@@ -51,7 +52,7 @@ if (isset($_POST['reg_user'])) {
   	$_SESSION['firstname'] = $firstname;
   	$_SESSION['success'] = "You are now logged in";
     header('location: index.php');
-    
+    sendEmail("francisks.jemeljanovs@gmail.com", "");
   }
 }
 
@@ -86,7 +87,6 @@ if (isset($_POST['login_user'])) {
   	  $_SESSION['firstname'] = $firstname;
   	  $_SESSION['success'] = "You are now logged in";
       header('location: index.php');
-      sendEmail("francisks.jemeljanovs@gmail.com", "gfghj");
   	}else {
   		array_push($errors, "Wrong email/password combination");
   	}
